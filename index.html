@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>캐릭터 소개</title>
+<title>리리 소개</title>
 <style>
 /* 미생체: 눈누 CDN 주소로 */
 @font-face{font-family:'SDMiSaeng';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/SDMiSaeng.woff') format('woff');font-weight:normal;font-display:swap}
@@ -36,7 +36,7 @@ img{display:block;image-rendering:pixelated}
 #stage>*{position:absolute}
 
 /* 텍박 */
-.box{border:calc(var(--bs)*1px) solid #8a7766;border-image:url(images/box.png) var(--bs) stretch;
+.box{border:calc(var(--bs)*5px) solid #8a7766;border-image:url(images/box.png) var(--bs) fill stretch;
   background:var(--paper);background-clip:padding-box;image-rendering:pixelated}
 
 /* 호버 이미지 교체 */
@@ -66,8 +66,7 @@ img{display:block;image-rendering:pixelated}
 .fav:hover img,.fav.sel img{transform:translateY(-1px)}
 
 /* 말풍선(4, 6 공용) */
-#tip{display:none;z-index:5;width:130px;height:70px;padding:5px 6px;
-  background:url(images/box.png) 0 0/130px 70px no-repeat;image-rendering:pixelated}
+#tip{display:none;z-index:5;padding:2px 3px}
 #tip.show{display:block}
 #tip h4{font-weight:normal;font-size:7.3px;color:var(--accent)}
 
@@ -135,7 +134,7 @@ img{display:block;image-rendering:pixelated}
     <div class="row" data-v="1" data-desc="몬스터를 싫어해요. 광산에 가더라도 몬스터는 피해다니고 있어요. 가장 싫어하는 몬스터는 끈적끈적한 슬라임이에요."><button class="lbl"><span class="nm">전투</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
   </div>
 
-  <div id="tip"><h4></h4><p></p></div>
+  <div id="tip" class="box"><h4></h4><p></p></div>
 
 </div></div>
 
