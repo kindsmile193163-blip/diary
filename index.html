@@ -66,7 +66,8 @@ img{display:block;image-rendering:pixelated}
 .fav:hover img,.fav.sel img{transform:translateY(-1px)}
 
 /* 말풍선(4, 6 공용) */
-#tip{display:none;z-index:5;padding:2px 3px}
+#tip{display:none;z-index:5;width:130px;height:70px;padding:5px 6px;
+  background:url(images/box.png) 0 0/130px 70px no-repeat;image-rendering:pixelated}
 #tip.show{display:block}
 #tip h4{font-weight:normal;font-size:7.3px;color:var(--accent)}
 
@@ -134,7 +135,7 @@ img{display:block;image-rendering:pixelated}
     <div class="row" data-v="1" data-desc="몬스터를 싫어해요. 광산에 가더라도 몬스터는 피해다니고 있어요. 가장 싫어하는 몬스터는 끈적끈적한 슬라임이에요."><button class="lbl"><span class="nm">전투</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
   </div>
 
-  <div id="tip" class="box"><h4></h4><p></p></div>
+  <div id="tip"><h4></h4><p></p></div>
 
 </div></div>
 
@@ -186,12 +187,12 @@ function openTip(anchor, mark, title, text, left, width) {
 favs.forEach(b => b.addEventListener('click', e => {
   e.stopPropagation();
   if (b.classList.contains('sel')) return closeTip();
-  openTip(b, b, b.dataset.title, b.dataset.desc, 190, 108);
+  openTip(b, b, b.dataset.title, b.dataset.desc, 180, 130);
 }));
 rows.forEach(r => r.querySelector('.lbl').addEventListener('click', e => {
   e.stopPropagation();
   if (r.classList.contains('sel')) return closeTip();
-  openTip(r.querySelector('.lbl'), r, r.querySelector('.nm').textContent, r.dataset.desc, 179, 131);
+  openTip(r.querySelector('.lbl'), r, r.querySelector('.nm').textContent, r.dataset.desc, 180, 130);
 }));
 document.addEventListener('click', closeTip);
 </script>
