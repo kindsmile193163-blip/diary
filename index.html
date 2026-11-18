@@ -32,10 +32,10 @@ img{display:block;image-rendering:pixelated}
 #wrap{position:relative;width:320px;height:210px}
 #stage{position:absolute;left:0;top:0;width:320px;height:210px;transform-origin:0 0;
   background:var(--paper) url(images/background.png) 0 0/320px 210px;image-rendering:pixelated;
-  font-size:6px;line-height:9px;overflow:hidden}
+  font-size:6.5px;line-height:9px;overflow:hidden}
 #stage>*{position:absolute}
 
-/* 텍박 우땨땨 */
+/* 텍박 */
 .box{border:calc(var(--bs)*1px) solid #8a7766;border-image:url(images/box.png) var(--bs) stretch;
   background:var(--paper);background-clip:padding-box;image-rendering:pixelated}
 
@@ -68,7 +68,7 @@ img{display:block;image-rendering:pixelated}
 /* 말풍선(4, 6 공용) */
 #tip{display:none;z-index:5;padding:2px 3px}
 #tip.show{display:block}
-#tip h4{font-weight:normal;font-size:8px;color:var(--accent)}
+#tip h4{font-weight:normal;font-size:7.3px;color:var(--accent)}
 
 /* 5. 스프라이트 */
 #body{left:217px;top:54px;width:50px;height:75px}
@@ -78,7 +78,7 @@ img{display:block;image-rendering:pixelated}
 /* 6. 능력치 */
 #stats{left:187px;top:136px;width:124px}
 .row{display:flex;align-items:center;height:10px}
-.lbl{width:24px;text-align:left;white-space:nowrap;line-height:1}
+.lbl{width:21px;text-align:left;white-space:nowrap;line-height:1}
 .lbl:hover,.row.sel .lbl{color:var(--accent)}
 .lbl em{font-style:normal}
 .bar{position:relative;width:84px;height:3px}   /* 10칸 = 70px, 12칸까지 84px */
