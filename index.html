@@ -59,7 +59,7 @@ img{display:block;image-rendering:pixelated}
 #info b{font-weight:normal;color:#7f9560;width:15px}
 
 /* ③ 소개글 */
-#intro{left:19px;top:105px;width:122px;height:87px;padding:4px 5px;overflow-y:auto;scrollbar-width:none}
+#intro{left:19px;top:105px;width:122px;height:87px;padding:4px 5px;overflow-y:auto;scrollbar-width:none;white-space:pre-line}
 #intro::-webkit-scrollbar{display:none}
 
 /* ④ 좋아하는 것 (슬롯 테두리는 background.png에 그려져 있다고 가정) */
@@ -100,15 +100,15 @@ img{display:block;image-rendering:pixelated}
 
   <!-- ② 기본 정보 -->
   <div id="info">
-    <div class="name">미나</div>
-    <p><b>성별</b>여성</p>
-    <p><b>나이</b>24세</p>
-    <p><b>생일</b>봄 14일</p>
-    <p><b>직업</b>농부</p>
+    <div class="name">릴리아나</div>
+    <p><b>집 위치</b>숲끝 농장</p>
+    <p><b>집 주소</b></b>잉걸불 수액 숲 끝자락</p>
+    <p><b>생일</b>봄 19일</p>
+    <p><b>반려동물</b>진저</p>
   </div>
 
   <!-- ③ 소개글 (길면 스크롤됩니다) -->
-  <div id="intro">여기에 캐릭터 소개글을 적어주세요. 마을 변두리에서 작은 딸기 농장을 가꾸며, 해 질 녘 산책을 가장 좋아합니다. 처음엔 낯을 가리지만 친해지면 말이 많아지는 타입이에요.</div>
+  <div id="intro">숲끝 농장의 농부. 요정인 할머니의 분홍빛 머리를 물려받았습니다. </div>
 
   <!-- ④ 좋아하는 것 (16x16) / 클릭하면 말풍선 -->
   <button class="fav" style="left:194px" data-title="딸기" data-desc="농장에서 가장 먼저 키운 작물. 매일 한 알씩 먹는다."><img src="images/strawberry.png" alt="딸기" onerror="this.style.visibility='hidden'"></button>
