@@ -5,21 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>캐릭터 소개</title>
 <style>
-/* 미생체: 눈누 CDN 주소로 불러옵니다 (폰트 파일을 저장소에 올리지 않음) */
+/* 미생체: 눈누 CDN 주소로 */
 @font-face{font-family:'SDMiSaeng';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/SDMiSaeng.woff') format('woff');font-weight:normal;font-display:swap}
 
 :root{
-  --paper:#fdfbf6;   /* 다이어리 종이색 (스포이드로 찍은 색으로 바꾸세요) */
-  --ink:#5b4636;     /* 글자색 */
-  --accent:#a14a4a;  /* 이름·제목 강조색 */
-  --bs:2;            /* box.png 모서리 두께(px). 6x6 이미지면 2, 9x9면 3 */
+  --paper:#fdfbf6;   /* 다이어리 바탕 */
+  --ink:#403531;     /* 글자 */
+  --accent:#a14a4a;  /* 이름이랑 제목 강조 */
+  --bs:2;            /* box.png 모서리 두께(px) */
 
-  /* ① 초상화가 들어갈 위치/크기 (액자 안쪽) */
+  /* 초상화 위치랑 크기 */
   --px:23px; --py:23px; --ps:47px;
-  /* ⑤ 전신 이미지의 위치/크기. 둘 다 50x75 로 만들었다면 아래 그대로 쓰면 됩니다.
-     (평소 이미지가 16x32 라면 --ax:9px; --ay:5px; --aw:32px; --ah:64px; 로 바꾸세요) */
-  --ax:0px; --ay:0px; --aw:50px; --ah:75px;   /* body.png (평소) */
-  --bx:0px; --by:0px; --bw:50px; --bh:75px;   /* body.gif (호버) */
+  /* 스프라이트 위치랑 크기, 50*75px기준. */
+  --ax:0px; --ay:0px; --aw:50px; --ah:75px;   /* body.png */
+  --bx:0px; --by:0px; --bw:50px; --bh:75px;   /* body.gif */
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -29,57 +28,56 @@ body{display:flex;align-items:center;justify-content:center;overflow:hidden;
 button{appearance:none;font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 img{display:block;image-rendering:pixelated}
 
-/* 320x210 기준으로 만들고 JS가 임베드 크기에 맞춰 확대합니다 */
+/* 320x210 기준, 임베드 시 확대 */
 #wrap{position:relative;width:320px;height:210px}
 #stage{position:absolute;left:0;top:0;width:320px;height:210px;transform-origin:0 0;
   background:var(--paper) url(images/background.png) 0 0/320px 210px;image-rendering:pixelated;
-  font-size:7px;line-height:9px;overflow:hidden}
+  font-size:6px;line-height:9px;overflow:hidden}
 #stage>*{position:absolute}
 
-/* 도트 테두리 박스 (9-slice): images/box.png 한 장으로 어떤 크기든 늘어납니다.
-   가운데는 투명하게 그리면 --paper 색이 비칩니다. 파일이 없으면 실선 테두리로 대체됩니다. */
+/* 텍박 우땨땨 */
 .box{border:calc(var(--bs)*1px) solid #8a7766;border-image:url(images/box.png) var(--bs) stretch;
   background:var(--paper);background-clip:padding-box;image-rendering:pixelated}
 
-/* 호버(터치 기기는 탭)하면 이미지 교체 */
+/* 호버 이미지 교체 */
 .swap{overflow:hidden}
 .swap img{position:absolute;inset:0;width:100%;height:100%}
 .swap .b{opacity:0}
 .swap:not(.missing):hover .b,.swap:not(.missing).on .b{opacity:1}
 .swap:not(.missing):hover .a,.swap:not(.missing).on .a{opacity:0}
 
-/* ① 초상화 (액자는 background.png에 그려져 있다고 가정) */
+/* 1. 초상화 */
 #portrait{left:var(--px);top:var(--py);width:var(--ps);height:var(--ps)}
-#portrait img{image-rendering:auto} /* 도트풍 초상화면 이 줄을 지우세요 */
+#portrait img{image-rendering:auto}
 
-/* ② 기본 정보 */
+/* 2. 기본 정보 */
 #info{left:82px;top:21px;width:70px}
 #info .name{font-size:10px;line-height:13px;color:var(--accent);margin-bottom:2px}
 #info p{display:flex;gap:3px;height:9px}
 #info b{font-weight:normal;color:#7f9560;width:15px}
 
-/* ③ 소개글 */
+/* 3. 소개글 */
 #intro{left:19px;top:105px;width:122px;height:87px;padding:4px 5px;overflow-y:auto;scrollbar-width:none;white-space:pre-line}
 #intro::-webkit-scrollbar{display:none}
 
-/* ④ 좋아하는 것 (슬롯 테두리는 background.png에 그려져 있다고 가정) */
+/* 4. 좋아하는 것 */
 .fav{top:29px;width:18px;height:18px;padding:1px}
 .fav img{width:16px;height:16px}
 .fav:hover img,.fav.sel img{transform:translateY(-1px)}
 
-/* 말풍선 (④, ⑥ 공용). 높이는 글자 수에 맞춰 자동으로 늘어납니다 */
+/* 말풍선(4, 6 공용) */
 #tip{display:none;z-index:5;padding:2px 3px}
 #tip.show{display:block}
 #tip h4{font-weight:normal;font-size:8px;color:var(--accent)}
 
-/* ⑤ 전신 (50x75 영역 전체가 호버 영역) */
+/* 5. 스프라이트 */
 #body{left:217px;top:54px;width:50px;height:75px}
 #body .a{inset:auto;left:var(--ax);top:var(--ay);width:var(--aw);height:var(--ah)}
 #body .b{inset:auto;left:var(--bx);top:var(--by);width:var(--bw);height:var(--bh)}
 
-/* ⑥ 능력치: 이름+점수 글자 / 얇은 막대 (10까지 진하게, 초과분은 연하게) */
-#stats{left:187px;top:130px;width:124px}
-.row{display:flex;align-items:center;height:12px}
+/* 6. 능력치 */
+#stats{left:187px;top:136px;width:124px}
+.row{display:flex;align-items:center;height:10px}
 .lbl{width:24px;text-align:left;white-space:nowrap;line-height:1}
 .lbl:hover,.row.sel .lbl{color:var(--accent)}
 .lbl em{font-style:normal}
@@ -87,18 +85,19 @@ img{display:block;image-rendering:pixelated}
 .bar i{position:absolute;top:0;height:3px;border-radius:2px}
 .bar .f{left:0;width:calc(min(var(--v),10)*7px);background:#e88a8f}
 .bar .o{left:70px;width:calc(max(var(--v) - 10,0)*7px);background:#f5cfd3;border-radius:0 2px 2px 0}
+.row[data-v="11"] .f,.row[data-v="12"] .f{border-radius:2px 0 0 2px}
 </style>
 </head>
 <body>
 <div id="wrap"><div id="stage">
 
-  <!-- ① 초상화: images/portrait.png (평소) / images/portrait-hover.png (호버) -->
+  <!-- 1. 초상화: images/portrait.png / images/portrait-hover.png (호버/클릭) -->
   <div id="portrait" class="swap">
     <img class="a" src="images/portrait.png" alt="초상화" onerror="this.style.visibility='hidden'">
     <img class="b" src="images/portrait-hover.png" alt="" onerror="this.parentNode.classList.add('missing');this.style.display='none'">
   </div>
 
-  <!-- ② 기본 정보 -->
+  <!-- 2. 기본 정보 -->
   <div id="info">
     <div class="name">릴리아나</div>
     <p><b>집 위치</b>숲끝 농장</p>
@@ -107,26 +106,26 @@ img{display:block;image-rendering:pixelated}
     <p><b>반려동물</b>진저</p>
   </div>
 
-  <!-- ③ 소개글 (길면 스크롤됩니다) -->
+  <!-- 3. 소개글 -->
   <div id="intro">숲끝 농장의 농부. 요정인 할머니의 분홍빛 머리를 물려받았습니다.
   
   어린 시절 조부모님이 가꾸던 농장에 머물렀던 추억이 있으며 숲끝 농장에 애착을 많이 가지고 있습니다. 고향은 도시이지만, 조자에서 약 1년 간 근무한 뒤 퇴사와 동시에 스타듀밸리로의 이사를 결심하게 됩니다.
   
   일기를 쓰고 책을 많이 읽습니다. 가볍게 읽을 수 있는 소설류를 가장 좋아해요. 애칭은 리리.</div>
 
-  <!-- ④ 좋아하는 것 (16x16) / 클릭하면 말풍선 -->
+  <!-- 4. 좋아하는 것들 -->
   <button class="fav" style="left:194px" data-title="딸기" data-desc="달콤한 늦봄의 맛. 봄이 오길 기다리는 이유 중 하나예요. 온실에서 기르고 있는 딸기도 있지만, 언제나 달걀 축제에서 딸기 씨앗을 사오곤 해요."><img src="images/strawberry.png" alt="딸기" onerror="this.style.visibility='hidden'"></button>
   <button class="fav" style="left:216px" data-title="새먼베리" data-desc="아주 어릴 적 할아버지와 새먼베리를 바구니가 넘칠만큼 따와 전부 잼으로 끓였던 기억이 있어요. 갓 구운 빵에 발라 먹는 추억의 맛."><img src="images/salmonberry.png" alt="새먼베리" onerror="this.style.visibility='hidden'"></button>
-  <button class="fav" style="left:238px" data-title="튤립" data-desc="할머니와 할아버지가 불러주시던 별명이에요. 꼬마 튤립은 어느덧 어른이 되었지만 아직도 분홍색 튤립을 보면 할머니의 미소가 떠올라요."><img src="images/tulip.png" alt="튤립" onerror="this.style.visibility='hidden'"></button>
-  <button class="fav" style="left:261px" data-title="알록달록 세 가지 맛 아이스크림" data-desc="입 안에 퍼지는 달콤한 맛들을 사랑해요. 가끔은 입안이 아릴 정도로 단맛에 머리가 아플 날도 있겠지만 어떻게 이런 걸 사랑하지 않을 수가 있겠어요?"><img src="images/icecream.png" alt="아이스크림" onerror="this.style.visibility='hidden'"></button>
+  <button class="fav" style="left:238px" data-title="튤립" data-desc="할머니와 할아버지가 불러주시던 별명이에요. 꼬마 튤립은 어느덧 어른이 되었지만, 아직도 분홍색 튤립을 보면 할머니의 미소가 떠올라요."><img src="images/tulip.png" alt="튤립" onerror="this.style.visibility='hidden'"></button>
+  <button class="fav" style="left:261px" data-title="알록달록 세 가지 맛 아이스크림" data-desc="입 안에 퍼지는 달콤한 맛들을 사랑해요. 가끔은 입안이 아릴 정도로 단맛에 머리가 아플 날도 있겠지만... 어떻게 이런 걸 사랑하지 않을 수가 있겠어요?"><img src="images/icecream.png" alt="아이스크림" onerror="this.style.visibility='hidden'"></button>
 
-  <!-- ⑤ 전신: images/body.png (평소) / images/body.gif (호버) -->
+  <!-- 5. 전신: images/body.png / images/body.gif (호버/클릭) -->
   <div id="body" class="swap">
     <img class="a" src="images/body.png" alt="전신" onerror="this.style.visibility='hidden'">
     <img class="b" src="images/body.gif" alt="" onerror="this.parentNode.classList.add('missing');this.style.display='none'">
   </div>
 
-  <!-- ⑥ 능력치: data-v 는 점수(최대 10, 초과 가능) / data-desc 는 이름을 눌렀을 때 나오는 설명 -->
+  <!-- 6. 능력치 -->
   <div id="stats">
     <div class="row" data-v="12" data-desc="할아버지가 남기고 간 농사 노트의 도움을 받고 있어요. 농장 한켠엔 작은 꽃밭들이 모여있고요. 어쩐지 대왕작물이 자주 열리는 이유는 할머니가 얘기해 준 요정 친구들 덕분인 걸까요?"><button class="lbl"><span class="nm">농사</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
     <div class="row" data-v="10" data-desc="새먼베리, 블랙베리, 길가에 핀 수선화와 스위트피... 숲자락에 숨겨진 모든 것들을 사랑해요. 가장 좋아하는 새먼베리가 열리는 봄엔 꼭 새먼베리 잼을 만들고 있어요."><button class="lbl"><span class="nm">채집</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
@@ -140,7 +139,6 @@ img{display:block;image-rendering:pixelated}
 </div></div>
 
 <script>
-// true 로 바꾸면 항상 정수 배율(1x, 2x, 3x…)로만 확대해 도트가 가장 선명합니다 (남는 여백 생김)
 const SNAP = false;
 
 const wrap = document.getElementById('wrap'), stage = document.getElementById('stage');
@@ -153,18 +151,18 @@ function fit() {
 }
 addEventListener('resize', fit); fit();
 
-// 터치 기기는 호버가 없으니 탭으로 이미지 교체
+// 아이패드 클릭용
 if (matchMedia('(hover:none)').matches)
   document.querySelectorAll('.swap').forEach(e => e.addEventListener('click', () => e.classList.toggle('on')));
 
-// 능력치: 막대 길이와 숫자를 data-v 에서 채움
+// 능력치 막대 길이, 숫자 data-v로 채움
 document.querySelectorAll('.row').forEach(r => {
   const v = +r.dataset.v;
   r.style.setProperty('--v', v);
   r.querySelector('em').textContent = v;
 });
 
-// 말풍선: 누른 요소 아래에 띄우고, 아래 공간이 모자라면 위로 띄움
+// 말풍선 기본 아래, 공간 모자라면 위로 띄움
 const tip = document.getElementById('tip');
 const favs = document.querySelectorAll('.fav'), rows = document.querySelectorAll('.row');
 function closeTip() {
