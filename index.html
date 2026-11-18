@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>캐릭터 소개</title>
+<style>
+/* 미생체: 눈누 CDN 주소로 불러옵니다 (폰트 파일을 저장소에 올리지 않음) */
+@font-face{font-family:'SDMiSaeng';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/SDMiSaeng.woff') format('woff');font-weight:normal;font-display:swap}
+
+:root{
+  --paper:#fdfbf6;   /* 다이어리 종이색 (스포이드로 찍은 색으로 바꾸세요) */
+  --ink:#5b4636;     /* 글자색 */
+  --accent:#a14a4a;  /* 이름·제목 강조색 */
+  --bs:2;            /* box.png 모서리 두께(px). 6x6 이미지면 2, 9x9면 3 */
+
+  /* ① 초상화가 들어갈 위치/크기 (액자 안쪽) */
+  --px:23px; --py:23px; --ps:47px;
+  /* ⑤ 전신 이미지의 위치/크기. 둘 다 50x75 로 만들었다면 아래 그대로 쓰면 됩니다.
+     (평소 이미지가 16x32 라면 --ax:9px; --ay:5px; --aw:32px; --ah:64px; 로 바꾸세요) */
+  --ax:0px; --ay:0px; --aw:50px; --ah:75px;   /* body.png (평소) */
+  --bx:0px; --by:0px; --bw:50px; --bh:75px;   /* body.gif (호버) */
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:transparent}
+body{display:flex;align-items:center;justify-content:center;overflow:hidden;
+  font-family:'SDMiSaeng',sans-serif;font-weight:normal;color:var(--ink)}
+button{appearance:none;font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+img{display:block;image-rendering:pixelated}
+
+/* 320x210 기준으로 만들고 JS가 임베드 크기에 맞춰 확대합니다 */
+#wrap{position:relative;width:320px;height:210px}
+#stage{position:absolute;left:0;top:0;width:320px;height:210px;transform-origin:0 0;
+  background:var(--paper) url(images/background.png) 0 0/320px 210px;image-rendering:pixelated;
+  font-size:7px;line-height:9px;overflow:hidden}
+#stage>*{position:absolute}
+
+/* 도트 테두리 박스 (9-slice): images/box.png 한 장으로 어떤 크기든 늘어납니다.
+   가운데는 투명하게 그리면 --paper 색이 비칩니다. 파일이 없으면 실선 테두리로 대체됩니다. */
+.box{border:calc(var(--bs)*1px) solid #8a7766;border-image:url(images/box.png) var(--bs) stretch;
+  background:var(--paper);background-clip:padding-box;image-rendering:pixelated}
+
+/* 호버(터치 기기는 탭)하면 이미지 교체 */
+.swap{overflow:hidden}
+.swap img{position:absolute;inset:0;width:100%;height:100%}
+.swap .b{opacity:0}
+.swap:not(.missing):hover .b,.swap:not(.missing).on .b{opacity:1}
+.swap:not(.missing):hover .a,.swap:not(.missing).on .a{opacity:0}
+
+/* ① 초상화 (액자는 background.png에 그려져 있다고 가정) */
+#portrait{left:var(--px);top:var(--py);width:var(--ps);height:var(--ps)}
+#portrait img{image-rendering:auto} /* 도트풍 초상화면 이 줄을 지우세요 */
+
+/* ② 기본 정보 */
+#info{left:82px;top:21px;width:70px}
+#info .name{font-size:10px;line-height:13px;color:var(--accent);margin-bottom:2px}
+#info p{display:flex;gap:3px;height:9px}
+#info b{font-weight:normal;color:#7f9560;width:15px}
+
+/* ③ 소개글 */
+#intro{left:19px;top:105px;width:122px;height:87px;padding:4px 5px;overflow-y:auto;scrollbar-width:none}
+#intro::-webkit-scrollbar{display:none}
+
+/* ④ 좋아하는 것 (슬롯 테두리는 background.png에 그려져 있다고 가정) */
+.fav{top:29px;width:18px;height:18px;padding:1px}
+.fav img{width:16px;height:16px}
+.fav:hover img,.fav.sel img{transform:translateY(-1px)}
+
+/* 말풍선 (④, ⑥ 공용). 높이는 글자 수에 맞춰 자동으로 늘어납니다 */
+#tip{display:none;z-index:5;padding:2px 3px}
+#tip.show{display:block}
+#tip h4{font-weight:normal;font-size:8px;color:var(--accent)}
+
+/* ⑤ 전신 (50x75 영역 전체가 호버 영역) */
+#body{left:217px;top:54px;width:50px;height:75px}
+#body .a{inset:auto;left:var(--ax);top:var(--ay);width:var(--aw);height:var(--ah)}
+#body .b{inset:auto;left:var(--bx);top:var(--by);width:var(--bw);height:var(--bh)}
+
+/* ⑥ 능력치: 이름+점수 글자 / 얇은 막대 (10까지 진하게, 초과분은 연하게) */
+#stats{left:187px;top:130px;width:124px}
+.row{display:flex;align-items:center;height:12px}
+.lbl{width:24px;text-align:left;white-space:nowrap;line-height:1}
+.lbl:hover,.row.sel .lbl{color:var(--accent)}
+.lbl em{font-style:normal}
+.bar{position:relative;width:84px;height:3px}   /* 10칸 = 70px, 12칸까지 84px */
+.bar i{position:absolute;top:0;height:3px;border-radius:2px}
+.bar .f{left:0;width:calc(min(var(--v),10)*7px);background:#e88a8f}
+.bar .o{left:70px;width:calc(max(var(--v) - 10,0)*7px);background:#f5cfd3;border-radius:0 2px 2px 0}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+
+  <!-- ① 초상화: images/portrait.png (평소) / images/portrait-hover.png (호버) -->
+  <div id="portrait" class="swap">
+    <img class="a" src="images/portrait.png" alt="초상화" onerror="this.style.visibility='hidden'">
+    <img class="b" src="images/portrait-hover.png" alt="" onerror="this.parentNode.classList.add('missing');this.style.display='none'">
+  </div>
+
+  <!-- ② 기본 정보 -->
+  <div id="info">
+    <div class="name">미나</div>
+    <p><b>성별</b>여성</p>
+    <p><b>나이</b>24세</p>
+    <p><b>생일</b>봄 14일</p>
+    <p><b>직업</b>농부</p>
+  </div>
+
+  <!-- ③ 소개글 (길면 스크롤됩니다) -->
+  <div id="intro">여기에 캐릭터 소개글을 적어주세요. 마을 변두리에서 작은 딸기 농장을 가꾸며, 해 질 녘 산책을 가장 좋아합니다. 처음엔 낯을 가리지만 친해지면 말이 많아지는 타입이에요.</div>
+
+  <!-- ④ 좋아하는 것 (16x16) / 클릭하면 말풍선 -->
+  <button class="fav" style="left:194px" data-title="딸기" data-desc="농장에서 가장 먼저 키운 작물. 매일 한 알씩 먹는다."><img src="images/strawberry.png" alt="딸기" onerror="this.style.visibility='hidden'"></button>
+  <button class="fav" style="left:216px" data-title="산딸기" data-desc="새콤한 맛이 좋아서 잼으로 만들어 둔다."><img src="images/salomberry.png" alt="산딸기" onerror="this.style.visibility='hidden'"></button>
+  <button class="fav" style="left:238px" data-title="튤립" data-desc="봄이 오면 집 앞에 가득 심어 둔다."><img src="images/tulip.png" alt="튤립" onerror="this.style.visibility='hidden'"></button>
+  <button class="fav" style="left:261px" data-title="아이스크림" data-desc="더운 날의 작은 보상. 딸기 맛이 최고."><img src="images/icecream.png" alt="아이스크림" onerror="this.style.visibility='hidden'"></button>
+
+  <!-- ⑤ 전신: images/body.png (평소) / images/body.gif (호버) -->
+  <div id="body" class="swap">
+    <img class="a" src="images/body.png" alt="전신" onerror="this.style.visibility='hidden'">
+    <img class="b" src="images/body.gif" alt="" onerror="this.parentNode.classList.add('missing');this.style.display='none'">
+  </div>
+
+  <!-- ⑥ 능력치: data-v 는 점수(최대 10, 초과 가능) / data-desc 는 이름을 눌렀을 때 나오는 설명 -->
+  <div id="stats">
+    <div class="row" data-v="12" data-desc="작물을 키우고 가꾸는 솜씨가 마을에서 으뜸이다."><button class="lbl"><span class="nm">농사</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
+    <div class="row" data-v="10" data-desc="숲에서 열매와 약초를 잘 찾아낸다."><button class="lbl"><span class="nm">채집</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
+    <div class="row" data-v="8" data-desc="낚싯대를 드리우면 월척을 자주 낚는다."><button class="lbl"><span class="nm">낚시</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
+    <div class="row" data-v="3" data-desc="곡괭이질은 서툴지만 조금씩 배우는 중이다."><button class="lbl"><span class="nm">채광</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
+    <div class="row" data-v="1" data-desc="싸움은 거의 못한다. 슬라임 앞에서도 도망친다."><button class="lbl"><span class="nm">전투</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
+  </div>
+
+  <div id="tip" class="box"><h4></h4><p></p></div>
+
+</div></div>
+
+<script>
+// true 로 바꾸면 항상 정수 배율(1x, 2x, 3x…)로만 확대해 도트가 가장 선명합니다 (남는 여백 생김)
+const SNAP = false;
+
+const wrap = document.getElementById('wrap'), stage = document.getElementById('stage');
+function fit() {
+  let s = Math.min(innerWidth / 320, (innerHeight || 1e4) / 210);
+  if (SNAP) s = Math.max(1, Math.floor(s));
+  wrap.style.width = 320 * s + 'px';
+  wrap.style.height = 210 * s + 'px';
+  stage.style.transform = 'scale(' + s + ')';
+}
+addEventListener('resize', fit); fit();
+
+// 터치 기기는 호버가 없으니 탭으로 이미지 교체
+if (matchMedia('(hover:none)').matches)
+  document.querySelectorAll('.swap').forEach(e => e.addEventListener('click', () => e.classList.toggle('on')));
+
+// 능력치: 막대 길이와 숫자를 data-v 에서 채움
+document.querySelectorAll('.row').forEach(r => {
+  const v = +r.dataset.v;
+  r.style.setProperty('--v', v);
+  r.querySelector('em').textContent = v;
+});
+
+// 말풍선: 누른 요소 아래에 띄우고, 아래 공간이 모자라면 위로 띄움
+const tip = document.getElementById('tip');
+const favs = document.querySelectorAll('.fav'), rows = document.querySelectorAll('.row');
+function closeTip() {
+  tip.classList.remove('show');
+  favs.forEach(f => f.classList.remove('sel'));
+  rows.forEach(r => r.classList.remove('sel'));
+}
+function openTip(anchor, mark, title, text, left, width) {
+  closeTip();
+  mark.classList.add('sel');
+  tip.querySelector('h4').textContent = title;
+  tip.querySelector('p').textContent = text;
+  tip.style.left = left + 'px';
+  tip.style.width = width + 'px';
+  tip.classList.add('show');
+  const y = anchor.offsetTop + anchor.offsetParent.offsetTop, h = anchor.offsetHeight;
+  let top = y + h + 2;
+  if (top + tip.offsetHeight > 200) top = y - tip.offsetHeight - 2;
+  tip.style.top = top + 'px';
+}
+favs.forEach(b => b.addEventListener('click', e => {
+  e.stopPropagation();
+  if (b.classList.contains('sel')) return closeTip();
+  openTip(b, b, b.dataset.title, b.dataset.desc, 190, 108);
+}));
+rows.forEach(r => r.querySelector('.lbl').addEventListener('click', e => {
+  e.stopPropagation();
+  if (r.classList.contains('sel')) return closeTip();
+  openTip(r.querySelector('.lbl'), r, r.querySelector('.nm').textContent, r.dataset.desc, 179, 131);
+}));
+document.addEventListener('click', closeTip);
+</script>
+</body>
+</html>
