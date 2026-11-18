@@ -108,13 +108,17 @@ img{display:block;image-rendering:pixelated}
   </div>
 
   <!-- ③ 소개글 (길면 스크롤됩니다) -->
-  <div id="intro">숲끝 농장의 농부. 요정인 할머니의 분홍빛 머리를 물려받았습니다. </div>
+  <div id="intro">숲끝 농장의 농부. 요정인 할머니의 분홍빛 머리를 물려받았습니다.
+  
+  어린 시절 조부모님이 가꾸던 농장에 머물렀던 추억이 있으며 숲끝 농장에 애착을 많이 가지고 있습니다. 고향은 도시이지만, 조자에서 약 1년 간 근무한 뒤 퇴사와 동시에 스타듀밸리로의 이사를 결심하게 됩니다.
+  
+  일기를 쓰고 책을 많이 읽습니다. 가볍게 읽을 수 있는 소설류를 가장 좋아해요. 애칭은 리리.</div>
 
   <!-- ④ 좋아하는 것 (16x16) / 클릭하면 말풍선 -->
-  <button class="fav" style="left:194px" data-title="딸기" data-desc="농장에서 가장 먼저 키운 작물. 매일 한 알씩 먹는다."><img src="images/strawberry.png" alt="딸기" onerror="this.style.visibility='hidden'"></button>
-  <button class="fav" style="left:216px" data-title="산딸기" data-desc="새콤한 맛이 좋아서 잼으로 만들어 둔다."><img src="images/salomberry.png" alt="산딸기" onerror="this.style.visibility='hidden'"></button>
-  <button class="fav" style="left:238px" data-title="튤립" data-desc="봄이 오면 집 앞에 가득 심어 둔다."><img src="images/tulip.png" alt="튤립" onerror="this.style.visibility='hidden'"></button>
-  <button class="fav" style="left:261px" data-title="아이스크림" data-desc="더운 날의 작은 보상. 딸기 맛이 최고."><img src="images/icecream.png" alt="아이스크림" onerror="this.style.visibility='hidden'"></button>
+  <button class="fav" style="left:194px" data-title="딸기" data-desc="달콤한 늦봄의 맛. 봄이 오길 기다리는 이유 중 하나예요. 온실에서 기르고 있는 딸기도 있지만, 언제나 달걀 축제에서 딸기 씨앗을 사오곤 해요."><img src="images/strawberry.png" alt="딸기" onerror="this.style.visibility='hidden'"></button>
+  <button class="fav" style="left:216px" data-title="새먼베리" data-desc="아주 어릴 적 할아버지와 새먼베리를 바구니가 넘칠만큼 따와 전부 잼으로 끓였던 기억이 있어요. 갓 구운 빵에 발라 먹는 추억의 맛."><img src="images/salomberry.png" alt="새먼베리" onerror="this.style.visibility='hidden'"></button>
+  <button class="fav" style="left:238px" data-title="튤립" data-desc="할머니와 할아버지가 불러주시던 별명이에요. 꼬마 튤립은 어느덧 어른이 되었지만 아직도 분홍색 튤립을 보면 할머니의 미소가 떠올라요."><img src="images/tulip.png" alt="튤립" onerror="this.style.visibility='hidden'"></button>
+  <button class="fav" style="left:261px" data-title="알록달록 세 가지 맛 아이스크림" data-desc="입 안에 퍼지는 달콤한 맛들을 사랑해요. 가끔은 입안이 아릴 정도로 단맛에 머리가 아플 날도 있겠지만 어떻게 이런 걸 사랑하지 않을 수가 있겠어요?"><img src="images/icecream.png" alt="아이스크림" onerror="this.style.visibility='hidden'"></button>
 
   <!-- ⑤ 전신: images/body.png (평소) / images/body.gif (호버) -->
   <div id="body" class="swap">
@@ -124,11 +128,11 @@ img{display:block;image-rendering:pixelated}
 
   <!-- ⑥ 능력치: data-v 는 점수(최대 10, 초과 가능) / data-desc 는 이름을 눌렀을 때 나오는 설명 -->
   <div id="stats">
-    <div class="row" data-v="12" data-desc="작물을 키우고 가꾸는 솜씨가 마을에서 으뜸이다."><button class="lbl"><span class="nm">농사</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
-    <div class="row" data-v="10" data-desc="숲에서 열매와 약초를 잘 찾아낸다."><button class="lbl"><span class="nm">채집</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
-    <div class="row" data-v="8" data-desc="낚싯대를 드리우면 월척을 자주 낚는다."><button class="lbl"><span class="nm">낚시</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
-    <div class="row" data-v="3" data-desc="곡괭이질은 서툴지만 조금씩 배우는 중이다."><button class="lbl"><span class="nm">채광</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
-    <div class="row" data-v="1" data-desc="싸움은 거의 못한다. 슬라임 앞에서도 도망친다."><button class="lbl"><span class="nm">전투</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
+    <div class="row" data-v="12" data-desc="할아버지가 남기고 간 농사 노트의 도움을 받고 있어요. 농장 한켠엔 작은 꽃밭들이 모여있고요. 어쩐지 대왕작물이 자주 열리는 이유는 할머니가 얘기해 준 요정 친구들 덕분인 걸까요?"><button class="lbl"><span class="nm">농사</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
+    <div class="row" data-v="10" data-desc="새먼베리, 블랙베리, 길가에 핀 수선화와 스위트피... 숲자락에 숨겨진 모든 것들을 사랑해요. 가장 좋아하는 새먼베리가 열리는 봄엔 꼭 새먼베리 잼을 만들고 있어요."><button class="lbl"><span class="nm">채집</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
+    <div class="row" data-v="8" data-desc="할아버지의 낚싯대를 사용해요. 스스로도 그럭저럭 낚시를 잘 한다고 생각해요. 지난 겨울 팸에게 얼음 낚시 1등을 빼앗겼지만, 올해 다시 우승을 되찾아오기위해 나몰래 연습중이에요."><button class="lbl"><span class="nm">낚시</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
+    <div class="row" data-v="3" data-desc="어둑어둑한 광산을 별로 좋아하지 않아요. 꼭 필요한 광물이 있을 때만 찾아가는 편이에요. 평소에는 클린트에게서 광물을, 로빈에게서 돌을 구매해요."><button class="lbl"><span class="nm">채광</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
+    <div class="row" data-v="1" data-desc="몬스터를 싫어해요. 광산에 가더라도 몬스터는 피해다니고 있어요. 가장 싫어하는 몬스터는 끈적끈적한 슬라임이에요."><button class="lbl"><span class="nm">전투</span> <em></em></button><div class="bar"><i class="f"></i><i class="o"></i></div></div>
   </div>
 
   <div id="tip" class="box"><h4></h4><p></p></div>
